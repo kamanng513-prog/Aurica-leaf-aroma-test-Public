@@ -1,11 +1,23 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.pyplot as plt
-from matplotlib import rcParams
 
-rcParams['font.sans-serif'] = ['Microsoft JhengHei']  # Windows 繁中
-rcParams['axes.unicode_minus'] = False
+#from matplotlib import rcParams
+#rcParams['font.sans-serif'] = ['Microsoft JhengHei']  # Windows 繁中
+#rcParams['axes.unicode_minus'] = False
+
+from matplotlib import font_manager
+# --- 1. Point DIRECTLY to the font file in your folder ---
+# Make sure 'msjh.ttc' is in the same folder as this script!
+font_path = 'msjh.ttc' 
+try:
+    # This manually registers the font for this session
+    font_manager.fontManager.addfont(font_path)
+    prop = font_manager.FontProperties(fname=font_path)
+    plt.rcParams['font.family'] = prop.get_name()
+    plt.rcParams['axes.unicode_minus'] = False
+except:
+    st.error("Font file not found! Please put 'msjh.ttc' in your project folder.")
 
 # --- 初始化 session_state ---
 if 'step' not in st.session_state:
@@ -76,7 +88,7 @@ def create_radar_chart(user_needs):
     ax.fill(angles, values, color='#A6C4B0', alpha=0.4)
 
     ax.set_xticks(angles[:-1])
-    ax.set_xticklabels(categories,fontsize=11,color='#333333')
+    ax.set_xticklabels(categories,fontsize=12,color='#333333')
     ax.tick_params(pad=18)  # 把文字推遠啲
     ax.set_yticks([2, 4, 6, 8, 10])
     ax.set_yticklabels([]) # 隱藏數字
@@ -108,9 +120,6 @@ def calculate_recommendation(user_needs):
     scored.sort(key=lambda x: x[1], reverse=True)
     return scored[:4] # 前4名
 
-# --- App 頁面 & 美化 ---
-st.set_page_config(page_title="Aurica Leaf 香氣情緒療癒測驗", layout="centered")
-
 # 全域淺啡木紋背景 + 整體風格
 st.set_page_config(page_title="Aurica Leaf 香氣情緒療癒測驗", layout="centered")
 
@@ -118,7 +127,7 @@ st.set_page_config(page_title="Aurica Leaf 香氣情緒療癒測驗", layout="ce
 st.markdown("""
     <style>
     .stApp {
-        background-image: url("https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcm00MDYyNDUwLWNsb3NlLXVwLW9mLWxpZ2h0LXdvb2QtZ3JhaW4tdGV4dHVyZS5qcGc.jpg");
+        background-image: url("https://github.com/kamanng513-prog/assets/blob/main/Pink%20Wood%20Photo%20Collage%20Valentine%20Poster.png?raw=true");
         background-size: cover;
         background-attachment: fixed;
     }
